@@ -1,3 +1,4 @@
+
 <div class="container"
     fxLayout="row"
     fxLayout.sm="column"
@@ -9,12 +10,12 @@
   <div fxFlex="40">
       <mat-card>
           <mat-card-header>
-              <mat-card-title> {{Dish.name | uppercase}} </mat-card-title>
+              <mat-card-title> {{dish.name | uppercase}} </mat-card-title>
           </mat-card-header>
-          <img matCardImage src={{Dish.image}} alt={{Dish.name}}>
+          <img matCardImage src={{dish.image}} alt={{dish.name}}>
           <mat-card-content>
              <p>
-                    {{Dish.description}}
+                    {{dish.description}}
              </p>
           </mat-card-content>
           <mat-card-actions >
@@ -27,7 +28,7 @@
   <div fxFlex="40">
     <h3>Comments</h3>
    <mat-list>
-       <mat-list-item *ngFor="let comment of Dish.comments">
+       <mat-list-item *ngFor="let comment of dish.comments">
             <span matLine> {{comment.comment |uppercase}} </span>
             <span matLine> {{comment.rating}} </span>
             <span matLine> --{{comment.author}} {{ comment.date | date:'mediumDate'}} </span>
