@@ -20,7 +20,7 @@ dish:Dish;
 
   ngOnInit() {
     const id = this._route.snapshot.params['id'];
-    this.dish=this._dishService.getDish(id);
+   this._dishService.getDish(id).then(dish =>  this.dish=dish);
   }
 
   goBack():void{
