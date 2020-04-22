@@ -17,7 +17,7 @@ export class PromotionService {
   getPromotion(id: string): Promise<Promotion> {
     return new Promise(resolve=> {
       // Simulate server latency with 2 second delay
-        setTimeout(() => resolve(PROMOTIONS.filter((dish) => (Promotion.id === id))[0]), 2000);
+        setTimeout(() => resolve(PROMOTIONS.filter((Promotion) => (Promotion.id === id))[0]), 2000);
     });
   }
 
