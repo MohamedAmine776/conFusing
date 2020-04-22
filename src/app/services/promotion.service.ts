@@ -6,6 +6,7 @@ import {Promotion} from '../shared/promotion';
 })
 export class PromotionService {
 
+  
   constructor() { }
   getPromotions(): Promise<Promotion[]> {
     return new Promise(resolve=> {
