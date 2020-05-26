@@ -1,13 +1,13 @@
 <div *ngIf="dish" >
 <div class="container"
     fxLayout="row"
-    fxLayout.sm="column"
-    fxLayout.xs="column"
+    fxLayout.sm="row"
+    fxLayout.xs="row"
     fxLayoutAlign.gt-md="space-around center"
     fxLayoutGap="10px" 
     fxLayoutGap.xs="0">
 
-  <div fxFlex="40"  *ngIf="dish">
+  <div fxFlex="60"  *ngIf="dish">
       <mat-card>
           <mat-card-header>
               <mat-card-title>  <h3 *ngIf="dish">{{dish.name | uppercase}}</h3> </mat-card-title>
@@ -24,17 +24,46 @@
             <button mat-button>SHARE</button>
           </mat-card-actions>
       </mat-card>
-  </div>
 
-  <div fxFlex="40"  *ngIf="dish.comments">
-    <h3>Comments</h3>
-   <mat-list>
-       <mat-list-item *ngFor="let comment of dish.comments">
-            <span matLine> {{comment.comment |uppercase}} </span>
-            <span matLine> {{comment.rating}} </span>
-            <span matLine> --{{comment.author}} {{ comment.date | date:'mediumDate'}} </span>
-       </mat-list-item>
-   </mat-list>
+      <div  *ngIf="dish.comments">
+        <h3>Comments</h3>
+       <mat-list>
+           <mat-list-item *ngFor="let comment of dish.comments">
+                <span matLine> {{comment.comment |uppercase}} </span>
+                <span matLine> {{comment.rating}} </span>
+                <span matLine> --{{comment.author}} {{ comment.date | date:'mediumDate'}} </span>
+           </mat-list-item>
+       </mat-list>
+      </div>
+
+      <div>
+        <div *ngIf="commentForm.valid">
+          <mat-list>
+          <mat-list-item >  
+        <span matLine> {{ commentForm.value.comment|uppercase}} </span>
+        <span matLine> {{commentForm.value.rating}} </span>
+        <span matLine> --{{commentForm.value.author}} </span>
+          </mat-list-item>
+          </mat-list>
+      </div>
+      <h3>Add a comment </h3>
+        <form novalidate [formGroup]="commentForm" #cform="ngForm" (ngSubmit)="onSubmit()">
+          <mat-form-field class="half-width">
+            <input matInput formControlName="author" placeholder="Name" type="text" required>
+            <mat-error *ngIf="formErrors.author">{{formErrors.author}}</mat-error>
+          </mat-form-field>
+          <table class="form-size">
+            <td>
+            <mat-slider formControlName="rating" thumbLabel tickInterval="1" min="1" max="5" step="1" [value]="value"></mat-slider>
+            </td>
+            </table>
+          <mat-form-field class="full-width">
+            <textarea matInput formControlName="comment" placeholder="Your Comment" rows=12 required></textarea>
+            <mat-error *ngIf="formErrors.comment">{{formErrors.comment}}</mat-error>
+          </mat-form-field>
+          <button type="submit" mat-button class="background-primary text-floral-white"[disabled]="commentForm.invalid">Submit</button>
+        </form>
+      </div>
   </div>
 </div>
 </div>

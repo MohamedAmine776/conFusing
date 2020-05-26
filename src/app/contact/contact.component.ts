@@ -7,13 +7,15 @@ import { Feedback, ContactType } from '../shared/feedback';
   styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent implements OnInit {
-  @ViewChild('fform',{static: false}) feedbackFormDirective;
+  @ViewChild('fform') feedbackFormDirective;
 
   formErrors = {
     'firstname': '',
     'lastname': '',
     'telnum': '',
-    'email': ''
+    'email': '',
+     'author':'',
+     'comment':''
   };
 
   validationMessages = {
@@ -35,6 +37,15 @@ export class ContactComponent implements OnInit {
       'required':      'Email is required.',
       'email':         'Email not in valid format.'
     },
+    'author': {
+      'required':      'Author name is required.',
+      'minlength':     'Author name must be at least 2 characters long.',
+      'maxlength':     'Author name cannot be more than 25 characters long.'
+    },
+    'comment': {
+      'required':      'comment is required.',
+      'minlength':     'comment must be at least 2 characters long.',
+    }
   };
   feedbackForm: FormGroup;
   feedback: Feedback;
@@ -57,6 +68,10 @@ export class ContactComponent implements OnInit {
       contacttype: 'None',
       message: ''
     });
+    this.feedbackForm.valueChanges
+    .subscribe(data => this.onValueChanged(data));
+
+  this.onValueChanged();
   }
 
   onSubmit() {
@@ -71,10 +86,6 @@ export class ContactComponent implements OnInit {
       contacttype: 'None',
       message: ''
     });
-    this.feedbackForm.valueChanges
-    .subscribe(data => this.onValueChanged(data));
-
-  this.onValueChanged();
 
   }
 
