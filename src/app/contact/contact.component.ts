@@ -7,7 +7,7 @@ import { Feedback, ContactType } from '../shared/feedback';
   styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent implements OnInit {
-  @ViewChild('fform') feedbackFormDirective;
+  @ViewChild('fform') feedbackFormDirective: any;
 
   formErrors = {
     'firstname': '',
@@ -56,7 +56,8 @@ export class ContactComponent implements OnInit {
     
   }
 
-  ngOnInit() {this.createForm();
+  ngOnInit() {
+    this.createForm();
   }
 
   createForm() {
@@ -78,6 +79,7 @@ export class ContactComponent implements OnInit {
   onSubmit() {
     this.feedback = this.feedbackForm.value;
     console.log(this.feedback);
+    this.feedbackFormDirective.resetForm()
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
