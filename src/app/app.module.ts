@@ -6,8 +6,7 @@ import { AppComponent } from './app.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
-//import {FlexLayoutModule} from '@angular/common/flex-layout';
-import 'hammerjs';
+
 import { MenuComponent } from './menu/menu.component';
 import {MatListModule} from '@angular/material/list';
 import{MatGridListModule}from '@angular/material/grid-list';
@@ -34,7 +33,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatSliderModule} from '@angular/material/slider';
 import { HttpClientModule } from '@angular/common/http';
 import { baseUrl } from './shared/baseUrl';
-
+import {ProcessHTTPMsgService} from './services/process-httpmsg.service';
+import { LeadersService} from './services/leaders.service';
+import 'hammerjs';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,8 @@ import { baseUrl } from './shared/baseUrl';
   providers: [
     DishService,
     PromotionService,
+    LeadersService,
+    ProcessHTTPMsgService,
     {provide: 'BaseUrl', useValue: baseUrl}
   ],
   bootstrap: [AppComponent]

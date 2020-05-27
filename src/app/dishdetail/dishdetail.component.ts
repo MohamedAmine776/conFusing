@@ -36,6 +36,7 @@ value=5;
 dishIds: string[];
 prev: string;
 next: string;
+  msgErr: String;
 
   constructor(private _dishService:DishService,
     private _location : Location,
@@ -47,7 +48,8 @@ next: string;
   ngOnInit() {
     this._dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
     this._route.params.pipe(switchMap((params: Params) => this._dishService.getDish(params['id'])))
-    .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+    .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },
+    msgErr=>this.msgErr=<any>msgErr);
   }
   setPrevNext(dishId: string) {
     const index = this.dishIds.indexOf(dishId);
