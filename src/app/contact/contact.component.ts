@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
 @Component({
@@ -51,11 +51,12 @@ export class ContactComponent implements OnInit {
   feedback: Feedback;
   contactType = ContactType;
   
-  constructor(private fb: FormBuilder) {
-    this.createForm();
+  constructor(private fb: FormBuilder,
+    @Inject('BaseUrl') public BaseUrl) {
+    
   }
 
-  ngOnInit() {
+  ngOnInit() {this.createForm();
   }
 
   createForm() {

@@ -32,6 +32,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatSliderModule} from '@angular/material/slider';
+import { HttpClientModule } from '@angular/common/http';
+import { baseUrl } from './shared/baseUrl';
+
 
 @NgModule({
   declarations: [
@@ -64,7 +67,8 @@ import {MatSliderModule} from '@angular/material/slider';
     ReactiveFormsModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
-    MatSliderModule
+    MatSliderModule,
+    HttpClientModule
   ],
   
   entryComponents: [
@@ -72,7 +76,8 @@ import {MatSliderModule} from '@angular/material/slider';
   ],
   providers: [
     DishService,
-    PromotionService
+    PromotionService,
+    {provide: 'BaseUrl', useValue: baseUrl}
   ],
   bootstrap: [AppComponent]
 })

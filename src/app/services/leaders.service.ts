@@ -1,30 +1,27 @@
 import { Injectable } from '@angular/core';
 import {Leader}from '../shared/leader';
-import {LEADERS} from '../shared/LEADERS';
+import { HttpClient} from '@angular/common/http';
+import {baseUrl} from '../shared/baseUrl';
+import { Observable } from 'rxjs';
+import {map} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class LeadersService {
-leaders = LEADERS;
-  constructor() { }
-getLeaders(): Promise<Leader[]> {
-  return new Promise(resolve=> {
-    // Simulate server latency with 2 second delay
-      setTimeout(() => resolve(this.leaders), 2000);
-  });
+  constructor(private _http:HttpClient) { }
+getLeaders(): Observable<Leader[]> {
+  return this._http.get<Leader[]>(baseUrl+'leadership');
 }
 
-getLeader(id: string): Promise<Leader> {
-  return new Promise(resolve=> {
-    // Simulate server latency with 2 second delay
-      setTimeout(() => resolve(this.leaders.filter((Leader) => (Leader.id === id))[0]), 2000);
-  });
+getLeader(id: string): Observable<Leader> {
+  return this._http.get<Leader>(baseUrl+'leadership/'+id);
 }
 
-getFeaturedLeader(): Promise<Leader> {
-  return  new Promise(resolve=> {
-    // Simulate server latency with 2 second delay
-      setTimeout(() => resolve(this.leaders.filter((Leader) => Leader.featured)[0]), 2000);
-  });
+getFeaturedLeader(): Observable<Leader> {
+  return  this._http.get<Leader>(baseUrl+'Leadership?featured=true').pipe(map(leader=>leader[0]));
 }
+getLeaderIds(): Observable<number[] | any> {
+  return this.getLeaders().pipe(map(leader => leader.map(leader => leader.id)));
+}
+
 }
