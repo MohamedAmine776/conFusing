@@ -36,6 +36,7 @@ import { baseUrl } from './shared/baseUrl';
 import {ProcessHTTPMsgService} from './services/process-httpmsg.service';
 import { LeadersService} from './services/leaders.service';
 import 'hammerjs';
+import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import 'hammerjs';
     AboutComponent,
     HomeComponent,
     ContactComponent,
-    LoginComponent
+    LoginComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
