@@ -6,10 +6,25 @@ import {DishService} from '../services/dish.service';
 import { Dish } from '../shared/dish';
 import {Comment} from '../shared/comment';
 import { switchMap } from 'rxjs/operators';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+
 @Component({
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
-  styleUrls: ['./dishdetail.component.scss']
+  styleUrls: ['./dishdetail.component.scss'],
+  animations: [
+    trigger('visibility', [
+      state('shown', style({
+          transform: 'scale(1.0)',
+          opacity: 1
+      })),
+      state('hidden', style({
+          transform: 'scale(0.5)',
+          opacity: 0
+      })),
+      transition('* => *', animate('0.5s ease-in-out'))
+  ])
+  ]
 })
 export class DishdetailComponent implements OnInit {
 
@@ -30,15 +45,17 @@ export class DishdetailComponent implements OnInit {
       'required':      'comment is required.'
     }
   };
-dish:Dish;
-comment:Comment;
-commentForm:FormGroup;
-value=5;
-dishIds: string[];
-prev: string;
-next: string;
+  dish:Dish;
+  comment:Comment;
+  commentForm:FormGroup;
+  value=5;
+  dishIds: string[];
+  prev: string;
+  next: string;
   msgErr: String;
   dishcopy: Dish;
+  visibility = 'shown';
+
 
   constructor(private _dishService:DishService,
     private _location : Location,
@@ -47,22 +64,28 @@ next: string;
     @Inject('BaseUrl') public BaseUrl
     ) {  this.createForm();}
 
+
   ngOnInit() {
     this._dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
-    this._route.params.pipe(switchMap((params: Params) => this._dishService.getDish(params['id'])))
-    .subscribe(dish => { this.dish = dish;this.dishcopy=dish; this.setPrevNext(dish.id); },
+    this._route.params.pipe(switchMap((params: Params) => {this.visibility = 'hidden';return this._dishService.getDish(params['id'])}))
+    .subscribe(dish => { this.dish = dish;this.dishcopy=dish; this.setPrevNext(dish.id); this.visibility = 'shown';},
     msgErr=>this.msgErr=<any>msgErr);
   }
+  
+
   setPrevNext(dishId: string) {
     const index = this.dishIds.indexOf(dishId);
     this.prev = this.dishIds[(this.dishIds.length + index - 1) % this.dishIds.length];
     this.next = this.dishIds[(this.dishIds.length + index + 1) % this.dishIds.length];
   }
+
+
   goBack():void{
     this._location.back();
   }
-  createForm(){
 
+
+  createForm(){
     this.commentForm=this._fb.group({
         rating:5,
         comment:['',[Validators.required,Validators.minLength(2)]],
@@ -75,17 +98,17 @@ next: string;
   }
 
   onSubmit(){
-let date=new Date;
-this.comment=this.commentForm.value;
-this.comment=this.commentForm.value;
-this.comment.date=date.toISOString();
-this.dishcopy.comments.push(this.comment);
-this._dishService.putDish(this.dishcopy)
-.subscribe(
-  data=>{
-    this.dishcopy=data;
-    this.dish=data
-  },
+    let date=new Date;
+    this.comment=this.commentForm.value;
+    this.comment=this.commentForm.value;
+    this.comment.date=date.toISOString();
+    this.dishcopy.comments.push(this.comment);
+    this._dishService.putDish(this.dishcopy)
+      .subscribe(
+        data=>{
+        this.dishcopy=data;
+        this.dish=data
+              },
   error=>{
     this.dish=null;
     this.dishcopy=null;
@@ -98,8 +121,7 @@ this.commentForm.reset({
   comment:'',
   author:''
 });
-
-  }
+}
 
   onValueChanged(data?:any){
    if(!this.commentForm){return;}
