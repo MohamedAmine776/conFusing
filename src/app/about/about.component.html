@@ -54,7 +54,7 @@
   </div>
 
 
-  <div fxFlex>
+  <div fxFlex *ngIf="leaders" [@expand]>
     <h2>Corporate Leadership</h2>
     <mat-list>
         <mat-list-item *ngFor="let leader of leaders">
@@ -65,4 +65,10 @@
         </mat-list-item>
     </mat-list>
   </div>
+
+  <div fxFlex *ngIf="LeadMsgErr">
+    <h2>Error</h2>
+    <h4>{{LeadMsgErr}}</h4>
+  </div>
+  
 </div>
