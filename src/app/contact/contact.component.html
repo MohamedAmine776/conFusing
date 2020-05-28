@@ -38,9 +38,7 @@
 
   <div fxFlex fxFlexOffset="20px" class="form-size">
     <h3>Send us your Feedback</h3>
-    <p>{{ feedbackForm.value | json }} {{ feedbackForm.status | json }}</p>
-
-      <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()">
+      <form novalidate [formGroup]="feedbackForm" #fform="ngForm" [@expand] *ngIf="feedbackCopy==null && !spin" (ngSubmit)="onSubmit()">
         <p>
           <mat-form-field class="half-width">
             <input matInput formControlName="firstname" placeholder="First Name" type="text" required>
@@ -75,10 +73,30 @@
         </table>
       <p>
         <mat-form-field class="full-width">
-          <textarea matInput formControlName="message" placeholder="Your Feedback" rows=12></textarea>
+          <textarea matInput formControlName="message" placeholder="Your Feedback" rows=12 required></textarea>
         </mat-form-field>
       </p>
       <button type="submit" mat-button class="background-primary text-floral-white"[disabled]="feedbackForm.invalid">Submit</button>
     </form>
+</div>
+<div *ngIf="spin" [@expand]>
+  <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
+</div>
+<div fxFlex *ngIf="errMsg" [@expand]>
+  <h2>Error</h2>
+  <h4>{{errMsg}}</h4>
+</div>
+<div fxFlex fxFlexOffset="20px" class="form-size" id="inf" *ngIf="feedbackCopy"  [@expand]>
+  <mat-list>
+    <mat-list-item >  
+  <span matLine> First Name :{{feedbackCopy.firstname}} </span>
+  <span matLine> Last Name :{{feedbackCopy.lastname}} </span>
+  <span matLine> Tel.Number :{{feedbackCopy.telnum}} </span>
+  <span matLine> Email : :{{feedbackCopy.email}} </span>
+  <span matLine> Contact You ? :{{feedbackCopy.agree}} </span>
+  <span matLine> how ? :{{feedbackCopy.contacttype}} </span>
+  <span matLine> Message :{{feedbackCopy.message}} </span>
+    </mat-list-item>
+    </mat-list>
 </div>
 </div>

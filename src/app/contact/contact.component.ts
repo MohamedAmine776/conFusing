@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
-import { flyInOut } from '../animations/animation';
+import { flyInOut, expand } from '../animations/animation';
+import { FeedbackService } from '../services/feedback.service';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
@@ -11,7 +12,7 @@ import { flyInOut } from '../animations/animation';
     'style': 'display: block;'
     },
     animations: [
-      flyInOut()
+      flyInOut(),expand()
     ]
 })
 export class ContactComponent implements OnInit {
@@ -58,8 +59,12 @@ export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
   contactType = ContactType;
-  
+
+  errMsg:String;
+  feedbackCopy: Feedback=null;
+  spin=false;
   constructor(private fb: FormBuilder,
+    private _feedbackService:FeedbackService,
     @Inject('BaseUrl') public BaseUrl) {
     
   }
@@ -85,6 +90,7 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
+    this.spin=true;
     this.feedback = this.feedbackForm.value;
     console.log(this.feedback);
     this.feedbackFormDirective.resetForm()
@@ -98,6 +104,24 @@ export class ContactComponent implements OnInit {
       message: ''
     });
 
+    
+    this._feedbackService.addFeedback(this.feedback).subscribe(
+        data=>{
+          this.spin=false;
+          this.feedback=data;
+          this.feedbackCopy=data;
+          console.log(this.feedbackCopy)
+          setTimeout(function(){
+            this.feedbackCopy=null;
+              console.log(this.feedbackCopy)
+            }.bind(this), 5000);
+        },
+        error=>{
+          this.errMsg=<any>error;
+        }
+
+    );
+    console.log(this.spin + '  '+ this.feedbackCopy)
   }
 
   onValueChanged(data?: any) {
